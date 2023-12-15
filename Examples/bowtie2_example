@@ -1,0 +1,20 @@
+SAM (Sequence Alignment/Map):
+Jede Zeile repräsentiert die Alignierungsinformationen für eine einzeilne Sequenz
+
+@HD     VN:1.0  SO:unsorted
+@SQ     SN:reference   LN:45
+read1   0       reference       1       30      5M      *       0       0       AGCTT       *       NM:i:0
+read2   0       reference       2       20      6M      *       0       0       TCGATA      *       NM:i:1
+read3   0       reference       4       10      5M      *       0       0       CAGCT       *       NM:i:0
+
+- QNAME: Der Name der Sequenz oder des Reads.
+- FLAG: Informationen über die Alignierung, z.B. ob die Sequenz paired-end ist oder auf dem richtigen Strang aligniert wurde.
+- RNAME: Der Name des Referenzchromosoms.
+- POS: Die Position des Alignments auf dem Referenzchromosom.
+- MAPQ: Die Qualität des Alignments.
+- CIGAR: Eine Zeichenkette, die die Operationen beschreibt, die für das Alignment verwendet wurden.
+- RNEXT: Der Name des Referenzchromosoms für die nächste gepaarte Sequenz.
+- PNEXT: Die Position des nächsten Alignments auf dem Referenzchromosom für die gepaarte Sequenz.
+- TLEN: Die Entfernung zwischen den 5'-Enden der gepaarten Reads.
+- SEQ: Die sequenzierten Basen.
+- QUAL: Die Qualität der sequenzierten Basen.
