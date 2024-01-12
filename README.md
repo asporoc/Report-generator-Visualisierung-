@@ -35,4 +35,5 @@ Aufgabe:
 - Kora-Plots verstehen und mit Python erstellen
 
 Bearbeitung 
-- Um die Bowtie2-File in das gleiche Format wie einen Kraken2-Report zu bringen wurde das convert_sam_to_kraken.py script geschrieben. Es befindet sich im Source Ordner. 
+- Um die Bowtie2-File in das gleiche Format wie einen Kraken2-Report zu bringen wurde das convert_sam_to_kraken.py script geschrieben. Es befindet sich im Source Ordner.
+- Um die Reports von Kraken2 zu visualisieren, benutzen wir Krona. Hierfür generieren wir mit visualize_kraken2Report.py eine HTML-Datei die man sich in einem Browser anschauen kann. 
