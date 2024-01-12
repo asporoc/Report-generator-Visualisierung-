@@ -33,3 +33,6 @@ Aufgabe:
 - Umwandlung der Bowtie2-Files in das gleiche Format wie Kraken2-Files durch Zuordnung der Sequenznamen 
 (GenBank-Accession steht in Seq.-Namen) zu einer TaxID im Baum
 - Kora-Plots verstehen und mit Python erstellen
+
+Bearbeitung 
+- Um die Bowtie2-File in das gleiche Format wie einen Kraken2-Report zu bringen wurde das convert_sam_to_kraken.py script geschrieben. Es befindet sich im Source Ordner. 
