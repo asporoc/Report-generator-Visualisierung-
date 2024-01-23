@@ -1,9 +1,11 @@
 #!/usr/bin/env nextflow
 
-params.kraken2_report = "$baseDir/kraken2_report.txt"
-params.sam_file = "$baseDir/sample.sam"
+nextflow.enable.dsl = 2
+params.kraken2_report = "$baseDir/report.txt"
+params.sam_file = "$baseDir/result.sam"
 
 process VisualizeKraken2Report {
+    container '/var/share/krona.sif'
     input:
     path kraken2_report
 
@@ -12,7 +14,7 @@ process VisualizeKraken2Report {
 
     script:
     """
-    python visualize_kraken2Report.py $kraken2_report
+    /usr/local/opt/krona/scripts/ImportTaxonomy.pl -tax /home/Annalena.Stamp/work/taxonomy -m 3 -t 5 $kraken2_report kraken_report.html
     """
 }
 
@@ -25,11 +27,12 @@ process ConvertSamToKraken {
 
     script:
     """
-    python convert_sam_to_kraken.py $sam_file sam_to_kraken.txt
+    python ${baseDir}/convert_sam_to_kraken.py $sam_file sam_to_kraken.txt
     """
 }
 
 process VisualizeConvertedSam {
+    container '/var/share/krona.sif'
     input:
     path sam_to_kraken_txt
 
@@ -38,12 +41,14 @@ process VisualizeConvertedSam {
 
     script:
     """
-    python visualize_kraken2Report.py $sam_to_kraken_txt
+    /usr/local/opt/krona/scripts/ImportTaxonomy.pl -tax /home/Annalena.Stamp/work/taxonomy -m 3 -t 5 $sam_to_kraken_txt sam.html
     """
 }
 
 workflow KronaVisualization {
-    
+    take:
+    kraken2_report
+    sam_file
 
     main:
     kraken_html = VisualizeKraken2Report(kraken2_report)
@@ -54,4 +59,8 @@ workflow KronaVisualization {
     kraken_html
     sam_to_kraken_txt
     sam_html
+}
+
+workflow {
+  KronaVisualization(Channel.fromPath(params.kraken2_report), Channel.fromPath(params.sam_file))
 }
