@@ -4,17 +4,18 @@ nextflow.enable.dsl = 2
 params.kraken2_report = "$baseDir/report.txt"
 params.sam_file = "$baseDir/result.sam"
 
-process VisualizeKraken2Report {
+process Krona {
     container '/var/share/krona.sif'
+    publishDir "/tmp/", mode: "copy", overwrite: true
     input:
-    path kraken2_report
+    path report
 
     output:
-    path "kraken_report.html"
+    path "${report.getBaseName()}.html"
 
     script:
     """
-    /usr/local/opt/krona/scripts/ImportTaxonomy.pl -tax /home/Annalena.Stamp/work/taxonomy -m 3 -t 5 $kraken2_report kraken_report.html
+    /usr/local/opt/krona/scripts/ImportTaxonomy.pl -tax /home/Annalena.Stamp/work/taxonomy -m 3 -t 5 ${report} -o ${report.getBaseName()}.html
     """
 }
 
@@ -30,35 +31,17 @@ process ConvertSamToKraken {
     python ${baseDir}/convert_sam_to_kraken.py $sam_file sam_to_kraken.txt
     """
 }
-
-process VisualizeConvertedSam {
-    container '/var/share/krona.sif'
-    input:
-    path sam_to_kraken_txt
-
-    output:
-    path "sam.html"
-
-    script:
-    """
-    /usr/local/opt/krona/scripts/ImportTaxonomy.pl -tax /home/Annalena.Stamp/work/taxonomy -m 3 -t 5 $sam_to_kraken_txt sam.html
-    """
-}
-
 workflow KronaVisualization {
     take:
     kraken2_report
     sam_file
 
     main:
-    kraken_html = VisualizeKraken2Report(kraken2_report)
     sam_to_kraken_txt = ConvertSamToKraken(sam_file)
-    sam_html = VisualizeConvertedSam(sam_to_kraken_txt)
+    kronas = Krona(kraken2_report.concat(sam_to_kraken_txt))
 
     emit:
-    kraken_html
-    sam_to_kraken_txt
-    sam_html
+    kronas
 }
 
 workflow {
