@@ -44,6 +44,6 @@ workflow KronaVisualization {
     kronas
 }
 
-workflow {
+workflow krona_workflow {
   KronaVisualization(Channel.fromPath(params.kraken2_report), Channel.fromPath(params.sam_file))
 }
